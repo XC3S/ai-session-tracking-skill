@@ -7,7 +7,7 @@
 import { readFileSync, existsSync } from 'fs';
 import { homedir } from 'os';
 import { join } from 'path';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { render, Box, Text, useInput } from 'ink';
 
 const CSV_FILE = join(homedir(), '.claude', 'tracking', 'sessions.csv');
@@ -184,14 +184,30 @@ function EmptyState() {
 
 // ─── App ─────────────────────────────────────────────────────────────────────
 
-function App({ sessions, dates }) {
+function buildDates(sessions) {
+  return [...new Set(sessions.map(s => s.date))].sort();
+}
+
+function App() {
   const today = new Date().toISOString().slice(0, 10);
+  const [sessions, setSessions] = useState(() => loadSessions());
+  const [dates, setDates] = useState(() => buildDates(loadSessions()));
   const todayIdx = dates.indexOf(today);
   const [idx, setIdx] = useState(todayIdx >= 0 ? todayIdx : dates.length - 1);
+
+  const reload = useCallback(() => {
+    const s = loadSessions();
+    const d = buildDates(s);
+    setSessions(s);
+    setDates(d);
+    const ti = d.indexOf(today);
+    setIdx(ti >= 0 ? ti : d.length - 1);
+  }, [today]);
 
   useInput((input, key) => {
     if (key.leftArrow) setIdx(i => Math.max(0, i - 1));
     if (key.rightArrow) setIdx(i => Math.min(dates.length - 1, i + 1));
+    if (input === 'r') reload();
     if (input === 'q' || (key.ctrl && input === 'c')) process.exit(0);
   });
 
@@ -236,8 +252,7 @@ function App({ sessions, dates }) {
       )}
 
       <Box marginTop={1}>
-        <Text dimColor>{'← →'} navigate days  ·  </Text>
-        <Text dimColor color="gray">q quit</Text>
+        <Text dimColor>{'← →'} navigate  ·  r reload  ·  q quit</Text>
       </Box>
     </Box>
   );
@@ -245,7 +260,4 @@ function App({ sessions, dates }) {
 
 // ─── Entry ───────────────────────────────────────────────────────────────────
 
-const sessions = loadSessions();
-const dates = [...new Set(sessions.map(s => s.date))].sort();
-
-render(<App sessions={sessions} dates={dates} />);
+render(<App />);

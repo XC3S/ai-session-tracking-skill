@@ -16,7 +16,7 @@ Hooks fire on every prompt (`UserPromptSubmit`) and on session end (`Stop`). Eac
 
 ```bash
 git clone https://github.com/XC3S/ai-session-tracking-skill
-cd tracking-skill
+cd ai-session-tracking-skill
 npm install
 node src/install.mjs
 ```
@@ -43,9 +43,10 @@ track
 | Key | Action |
 |-----|--------|
 | `←` `→` | Navigate days |
-| `q` | Quit |
+| `r` | Reload CSV and jump to today |
+| `q` / `Ctrl+C` | Quit |
 
-Each session shows: time, source (`cc` = Claude Code, `cur` = Cursor), project, duration, and the first line of the prompt.
+Each session shows: time, source (`cc` = Claude Code, `cur` = Cursor), project, duration, and the first line of the prompt. Sessions still in progress are shown in magenta as `active`.
 
 ## Data format
 
