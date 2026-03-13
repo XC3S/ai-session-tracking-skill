@@ -15,7 +15,7 @@ Hooks fire on every prompt (`UserPromptSubmit`) and on session end (`Stop`). Eac
 ## Installation
 
 ```bash
-git clone https://github.com/yourname/tracking-skill
+git clone https://github.com/XC3S/ai-session-tracking-skill
 cd tracking-skill
 npm install
 node src/install.mjs
