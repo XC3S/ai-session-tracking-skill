@@ -1,0 +1,23 @@
+{
+  "name": "tracking-skill",
+  "version": "1.0.0",
+  "description": "Track AI work sessions per project with Claude Code hooks",
+  "type": "module",
+  "bin": {
+    "track": "./bin/track.mjs",
+    "track-mcp": "./src/mcp-server.mjs"
+  },
+  "scripts": {
+    "view": "tsx src/viewer.jsx",
+    "install-hooks": "node src/install.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "ink": "^5.2.0",
+    "react": "^18.3.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.27.3",
+    "tsx": "^4.21.0"
+  }
+}
